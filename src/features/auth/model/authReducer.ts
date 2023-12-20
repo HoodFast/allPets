@@ -24,13 +24,13 @@ const slice = createSlice({
 
 // thunks
 
-const registration = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("auth/login", async (arg, thunkAPI) => {
+const registration = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("auth/users", async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI;
 
     const res = await authAPI.createToken(arg);
+    console.log(res)
 
     if (true) {
-
         return {isLoggedIn: true};
     } else {
         // const isShowAppError = !res.data.fieldsErrors.length;

@@ -13,8 +13,8 @@ export const authAPI = {
         return instance.get("auth/me");
     },
     createToken(data:LoginParamsType){
-        debugger
-        return instance.post('api/token', data).then((res)=> console.log(res))
+
+        return instance.post('auth/users/', data)
     }
 };
 

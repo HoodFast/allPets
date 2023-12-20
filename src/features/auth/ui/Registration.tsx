@@ -3,10 +3,10 @@ import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {authThunks} from "../model/authReducer";
-import axios from "axios";
-import {instance} from "../../common/common.api";
-import {useEffect} from "react";
-import {log} from "util";
+import {useAppDispatch} from "../../../app/store";
+
+
+
 
 
 const schema = z.object({
@@ -16,10 +16,7 @@ const schema = z.object({
 
 type FormValues = z.input<typeof schema>
 export const Registration = () => {
-    useEffect(() => {
-        instance.get('pets/').then((res)=>{
-            console.log(res)})
-    },[])
+    const dispatch = useAppDispatch();
     const {
         register,
         handleSubmit,
@@ -33,10 +30,7 @@ export const Registration = () => {
         },
     })
     const onSubmit = (data: FormValues) => {
-
-        authThunks.registration(data)
-
-        // console.log(data)
+        dispatch(authThunks.registration(data))
     }
 
     return (
