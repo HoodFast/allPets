@@ -10,11 +10,10 @@ export const authAPI = {
         return instance.delete("auth/login");
     },
     me() {
-        return instance.get("auth/me");
+        return instance.get("auth/users/me");
     },
     createToken(data:LoginParamsType){
-
-        return instance.post('auth/users/', data)
+        return instance.post('token/', data)
     }
 };
 

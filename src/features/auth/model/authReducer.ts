@@ -4,6 +4,7 @@ import {authAPI, LoginParamsType} from "../api/auth.api";
 const slice = createSlice({
     name: "auth",
     initialState: {
+        data:{},
         isLoggedIn: false,
     },
     reducers: {},
@@ -13,9 +14,9 @@ const slice = createSlice({
             .addCase(registration.fulfilled, (state, action) => {
                 state.isLoggedIn = action.payload.isLoggedIn;
             })
-        // .addCase(logout.fulfilled, (state, action) => {
-        //     state.isLoggedIn = action.payload.isLoggedIn;
-        // })
+            .addCase(getMe.fulfilled, (state, action) => {
+                state.data = action.payload;
+            })
         // .addCase(initializeApp.fulfilled, (state, action) => {
         //     state.isLoggedIn = action.payload.isLoggedIn;
         // });
@@ -27,7 +28,7 @@ const slice = createSlice({
 const registration = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("auth/users", async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI;
 
-    const res = await authAPI.createToken(arg);
+    const res = await authAPI.createUser(arg);
     console.log(res)
 
     if (true) {
@@ -37,7 +38,24 @@ const registration = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
         // return rejectWithValue({ data: res.data, showGlobalError: isShowAppError });
     }
 });
-
+const login = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>("auth/login", async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI;
+    const res = await authAPI.createToken(arg);
+    if (res) {
+        return {isLoggedIn: true};
+    } else {
+        return rejectWithValue(null);
+    }
+});
+const getMe = createAsyncThunk<any>("auth/me", async (_, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI;
+    const res = await authAPI.me();
+    if (res) {
+        return {...res};
+    } else {
+        return rejectWithValue(null);
+    }
+});
 // const logout = createAsyncThunk<{ isLoggedIn: boolean }, void>("auth/logout", async (_, thunkAPI) => {
 //     const { dispatch, rejectWithValue } = thunkAPI;
 //     const res = await authAPI.logout();
@@ -66,4 +84,4 @@ const registration = createAsyncThunk<{ isLoggedIn: boolean }, LoginParamsType>(
 // });
 
 export const authReducer = slice.reducer;
-export const authThunks = {registration};
+export const authThunks = {registration, login, getMe};
