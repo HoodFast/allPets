@@ -1,5 +1,4 @@
 import {instance} from "../../common/common.api";
-import {log} from "util";
 
 
 export const authAPI = {

@@ -1,5 +1,5 @@
 import {authReducer} from "../features/auth/model/authReducer";
-import {AnyAction, combineReducers, configureStore, ThunkAction, ThunkDispatch} from "@reduxjs/toolkit";
+import {AnyAction, combineReducers, configureStore, ThunkAction, ThunkDispatch,} from "@reduxjs/toolkit";
 import {useDispatch} from "react-redux";
 
 const rootReducer = combineReducers({
@@ -8,6 +8,9 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
     reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        serializableCheck: false
+    })
 });
 
 export type AppRootStateType = ReturnType<typeof store.getState>;
@@ -21,3 +24,4 @@ window.store = store;
 
 type AppDispatchType = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatchType>();
+
